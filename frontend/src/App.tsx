@@ -26,6 +26,7 @@ import {
 } from "./api/client";
 import Playground from "./Playground";
 import MarkdownContent from "./MarkdownContent";
+import { messages, type Language, type MessageKey } from "./i18n";
 
 function compactDuration(ns?: number) {
   if (ns == null) return "—";
@@ -39,6 +40,14 @@ function speed(message: Message) {
 }
 
 export default function App() {
+  const [language, setLanguage] = useState<Language>(() => {
+    try {
+      return localStorage.getItem("lacc-language") === "nl" ? "nl" : "en";
+    } catch {
+      return "en";
+    }
+  });
+  const t = (key: MessageKey) => messages[language][key];
   const [status, setStatus] = useState<OllamaStatus | null>(null);
   const [models, setModels] = useState<Model[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -59,6 +68,15 @@ export default function App() {
   const textarea = useRef<HTMLTextAreaElement>(null);
   const searchInput = useRef<HTMLInputElement>(null);
   const aborter = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    try {
+      localStorage.setItem("lacc-language", language);
+    } catch {
+      // The selected language still applies for this session.
+    }
+  }, [language]);
 
   const refresh = useCallback(async () => {
     try {
@@ -210,7 +228,7 @@ export default function App() {
         <button
           className="icon-btn mobile-close"
           onClick={() => setSidebarOpen(false)}
-          aria-label="Close sidebar"
+          aria-label={t("closeSidebar")}
         >
           <X size={17} />
         </button>
@@ -222,14 +240,14 @@ export default function App() {
           void newConversation();
         }}
       >
-        <Plus size={16} /> New conversation <span>⌘ K</span>
+        <Plus size={16} /> {t("newConversation")} <span>⌘ K</span>
       </button>
-      <div className="side-label">WORKSPACE</div>
+      <div className="side-label">{t("workspace")}</div>
       <button
         className={`nav-item ${view === "chat" ? "selected" : ""}`}
         onClick={() => setView("chat")}
       >
-        <MessageSquare size={15} /> Conversations{" "}
+        <MessageSquare size={15} /> {t("conversations")}{" "}
         <span className="nav-count">{conversations.length}</span>
       </button>
       <button
@@ -240,18 +258,18 @@ export default function App() {
           setSidebarOpen(false);
         }}
       >
-        <Sparkles size={15} /> Prompt Playground
+        <Sparkles size={15} /> {t("promptPlayground")}
       </button>
       <div className="convo-heading">
-        <div className="side-label">RECENT</div>
+        <div className="side-label">{t("recent")}</div>
         <span>{conversations.length}</span>
       </div>
       <label className="search-box">
         <Search size={14} />
         <input
           ref={searchInput}
-          placeholder="Search conversations"
-          aria-label="Search conversations"
+          placeholder={t("searchConversations")}
+          aria-label={t("searchConversations")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -270,7 +288,7 @@ export default function App() {
             >
               <span className="conversation-title">{item.title}</span>
               <span className="conversation-model">
-                {item.model || "No model selected"}
+                {item.model || t("noModelSelected")}
               </span>
             </button>
             <div className="row-actions">
@@ -278,15 +296,15 @@ export default function App() {
                 <>
                   <button
                     onClick={() => void renameConversation(item.id)}
-                    title="Save"
-                    aria-label={`Save ${item.title}`}
+                    title={t("save")}
+                    aria-label={`${t("save")} ${item.title}`}
                   >
                     <Check size={14} />
                   </button>
                   <button
                     onClick={() => setRenaming(null)}
-                    title="Cancel"
-                    aria-label={`Cancel renaming ${item.title}`}
+                    title={t("cancel")}
+                    aria-label={`${t("cancel")} ${item.title}`}
                   >
                     <X size={14} />
                   </button>
@@ -298,15 +316,15 @@ export default function App() {
                       setRenaming(item.id);
                       setRenameText(item.title);
                     }}
-                    title="Rename"
-                    aria-label={`Rename ${item.title}`}
+                    title={t("rename")}
+                    aria-label={`${t("rename")} ${item.title}`}
                   >
                     <Pencil size={13} />
                   </button>
                   <button
                     onClick={() => void deleteConversation(item)}
-                    title="Delete"
-                    aria-label={`Delete ${item.title}`}
+                    title={t("delete")}
+                    aria-label={`${t("delete")} ${item.title}`}
                   >
                     <Trash2 size={13} />
                   </button>
@@ -331,10 +349,10 @@ export default function App() {
         {conversations.length === 0 && (
           <div className="sidebar-empty">
             {loadingConversations
-              ? "Loading conversations…"
+              ? t("loadingConversations")
               : search
-                ? "No matches found"
-                : "Your conversations will appear here."}
+                ? t("noMatches")
+                : t("emptyConversations")}
           </div>
         )}
       </div>
@@ -344,11 +362,11 @@ export default function App() {
             <Cpu size={15} />
           </div>
           <div>
-            <strong>Ollama Engine</strong>
+            <strong>{t("ollamaEngine")}</strong>
             <small>
               {isConnected
-                ? `Connected${status?.version ? ` · v${status.version}` : ""}`
-                : "Not connected"}
+                ? `${t("connected")}${status?.version ? ` · v${status.version}` : ""}`
+                : t("notConnected")}
             </small>
           </div>
           <span className="engine-dot" />
@@ -356,8 +374,8 @@ export default function App() {
         <div className="profile">
           <div className="avatar">LC</div>
           <div>
-            <b>Local workspace</b>
-            <small>Private environment</small>
+            <b>{t("localWorkspace")}</b>
+            <small>{t("privateEnvironment")}</small>
           </div>
           <MoreHorizontal size={16} />
         </div>
@@ -378,34 +396,56 @@ export default function App() {
             <button
               className="icon-btn menu-trigger"
               onClick={() => setSidebarOpen(true)}
-              aria-label="Open sidebar"
+              aria-label={t("openSidebar")}
             >
               <Menu size={18} />
             </button>
             <span className="breadcrumb">
-              Workspace <span>/</span>{" "}
+              {t("breadcrumbWorkspace")} <span>/</span>{" "}
               <b>
                 {view === "playground"
-                  ? "Prompt Playground"
-                  : active?.title || "New conversation"}
+                  ? t("promptPlayground")
+                  : active?.title || t("newConversationTitle")}
               </b>
             </span>
           </div>
           <div className="topbar-right">
+            <div
+              className="language-switch"
+              role="group"
+              aria-label={t("language")}
+            >
+              <button
+                type="button"
+                className={language === "en" ? "selected" : ""}
+                aria-pressed={language === "en"}
+                onClick={() => setLanguage("en")}
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                className={language === "nl" ? "selected" : ""}
+                aria-pressed={language === "nl"}
+                onClick={() => setLanguage("nl")}
+              >
+                NL
+              </button>
+            </div>
             <span
               className={`status-pill ${isConnected ? "connected" : status ? "" : "checking"}`}
             >
               <i />
               {status
                 ? isConnected
-                  ? "Ollama connected"
-                  : "Ollama offline"
-                : "Checking Ollama"}
+                  ? t("ollamaConnected")
+                  : t("ollamaOffline")
+                : t("checkingOllama")}
             </span>
           </div>
         </header>
         {view === "playground" ? (
-          <Playground models={models} />
+          <Playground models={models} language={language} />
         ) : (
           <section className="workspace">
             <div className="chat-column">
@@ -425,18 +465,14 @@ export default function App() {
                       <span className="orbit-dot dot-three" />
                     </div>
                     <div className="welcome-kicker">
-                      <span /> YOUR LOCAL AI WORKSPACE
+                      <span /> {t("welcomeKicker")}
                     </div>
                     <h1>
-                      Think freely.
+                      {t("thinkFreely")}
                       <br />
-                      <em>Run locally.</em>
+                      <em>{t("runLocally")}</em>
                     </h1>
-                    <p className="welcome-copy">
-                      A private space to explore ideas with open models
-                      <br className="desktop" /> running entirely on your
-                      machine.
-                    </p>
+                    <p className="welcome-copy">{t("welcomeCopy")}</p>
                     <div className="starter-card">
                       <div className="starter-icon">
                         <Zap size={17} />
@@ -445,26 +481,26 @@ export default function App() {
                         <b>
                           {isConnected
                             ? models.length
-                              ? "Ready when you are"
-                              : "Ollama is running"
+                              ? t("readyWhenYouAre")
+                              : t("ollamaIsRunning")
                             : status
-                              ? "Connect your local models"
-                              : "Checking local Ollama connection…"}
+                              ? t("connectLocalModels")
+                              : t("checkingConnection")}
                         </b>
                         <span>
                           {isConnected
                             ? models.length
-                              ? "Choose a model below and start a conversation."
-                              : "No models found. Pull one in Ollama to get started."
-                            : "Start Ollama locally, then your workspace is ready."}
+                              ? t("chooseModelAndStart")
+                              : t("noModelsFound")
+                            : t("startOllama")}
                         </span>
                         {status && !isConnected && <code>ollama serve</code>}
                       </div>
                       <Activity size={15} className="starter-activity" />
                     </div>
                     <div className="privacy-note">
-                      <span className="privacy-lock">◈</span> Your prompts stay
-                      on your machine
+                      <span className="privacy-lock">◈</span>{" "}
+                      {t("promptsStayLocal")}
                     </div>
                   </div>
                 )}
@@ -484,11 +520,11 @@ export default function App() {
                       <div className="message-label">
                         {message.role === "assistant" ? (
                           <>
-                            {active.model || "Assistant"}{" "}
-                            <span className="model-badge">LOCAL</span>
+                            {active.model || t("assistant")}{" "}
+                            <span className="model-badge">{t("local")}</span>
                           </>
                         ) : (
-                          "You"
+                          t("you")
                         )}
                       </div>
                       {message.role === "assistant" ? (
@@ -503,13 +539,16 @@ export default function App() {
                           <div className="stats-row">
                             <span>
                               <Zap size={12} />
-                              {compactDuration(message.total_duration_ns)} total
+                              {compactDuration(message.total_duration_ns)}{" "}
+                              {t("total")}
                             </span>
                             <span>
                               {compactDuration(message.prompt_duration_ns)}{" "}
-                              prompt
+                              {t("prompt")}
                             </span>
-                            <span>{message.eval_count ?? "—"} tokens</span>
+                            <span>
+                              {message.eval_count ?? "—"} {t("tokens")}
+                            </span>
                             {speed(message) && <span>{speed(message)}</span>}
                           </div>
                         )}
@@ -522,7 +561,7 @@ export default function App() {
                       <span>Y</span>
                     </div>
                     <div className="message-body">
-                      <div className="message-label">You</div>
+                      <div className="message-label">{t("you")}</div>
                       <div className="message-text">{pendingUser}</div>
                     </div>
                   </article>
@@ -534,8 +573,8 @@ export default function App() {
                     </div>
                     <div className="message-body">
                       <div className="message-label">
-                        {model || "Assistant"}{" "}
-                        <span className="model-badge">LOCAL</span>
+                        {model || t("assistant")}{" "}
+                        <span className="model-badge">{t("local")}</span>
                       </div>
                       {reply ? (
                         <MarkdownContent className="message-text markdown-body">
@@ -559,12 +598,12 @@ export default function App() {
                       <X size={14} />
                     </span>
                     <div>
-                      <b>Something went wrong</b>
+                      <b>{t("somethingWentWrong")}</b>
                       <p>{error}</p>
                     </div>
                     <button
                       onClick={() => setError("")}
-                      aria-label="Dismiss error"
+                      aria-label={t("dismissError")}
                     >
                       <X size={15} />
                     </button>
@@ -575,14 +614,12 @@ export default function App() {
                 <div className="composer">
                   <textarea
                     ref={textarea}
-                    aria-label="Message Ollama"
+                    aria-label={t("messageOllama")}
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
                     onKeyDown={keyDown}
                     placeholder={
-                      isConnected
-                        ? "Ask anything... your conversation stays local"
-                        : "Start Ollama to begin chatting"
+                      isConnected ? t("askAnything") : t("startOllamaToChat")
                     }
                     disabled={!isConnected || streaming}
                     rows={1}
@@ -600,7 +637,7 @@ export default function App() {
                           disabled={!isConnected || !models.length}
                         >
                           <span className="model-dot" />
-                          <span>{model || "Select a model"}</span>
+                          <span>{model || t("selectModel")}</span>
                           <ChevronDown size={13} />
                         </button>
                         {modelMenu && (
@@ -622,13 +659,11 @@ export default function App() {
                         )}
                       </div>
                       <span className="local-indicator">
-                        <span /> LOCAL
+                        <span /> {t("local")}
                       </span>
                     </div>
                     <div className="composer-right">
-                      <span className="send-hint">
-                        ↵ to send <span>·</span> shift ↵ for newline
-                      </span>
+                      <span className="send-hint">{t("sendHint")}</span>
                       <button
                         className="send-btn"
                         onClick={() =>
@@ -642,7 +677,7 @@ export default function App() {
                             : !draft.trim() || !model || !isConnected
                         }
                         aria-label={
-                          streaming ? "Stop response" : "Send message"
+                          streaming ? t("stopResponse") : t("sendMessage")
                         }
                       >
                         {streaming ? <X size={15} /> : <Send size={15} />}
@@ -651,13 +686,13 @@ export default function App() {
                   </div>
                 </div>
                 <div className="composer-disclaimer">
-                  AI responses can be inaccurate. Verify important information.
+                  {t("aiMayBeInaccurate")}
                 </div>
               </div>
             </div>
             <footer className="workspace-footer">
               <span>
-                <span className="footer-dot" /> All inference happens locally
+                <span className="footer-dot" /> {t("inferenceLocal")}
               </span>
               <span>
                 LOCAL AI CONTROL CENTER <b>·</b> v0.1

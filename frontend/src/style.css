@@ -404,6 +404,34 @@ textarea:focus-visible {
   align-items: center;
   gap: 14px;
 }
+.language-switch {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid #ffffff12;
+  border-radius: 6px;
+  background: #090d0a;
+}
+.language-switch button {
+  min-width: 27px;
+  border: 0;
+  border-radius: 4px;
+  padding: 4px 5px;
+  color: #758077;
+  background: transparent;
+  font: 8px var(--mono);
+  cursor: pointer;
+  transition:
+    color 0.16s ease,
+    background 0.16s ease;
+}
+.language-switch button:hover {
+  color: #cbd4ca;
+}
+.language-switch button.selected {
+  color: #dce9d2;
+  background: #c5eb9117;
+}
 .breadcrumb {
   font-size: 10px;
   color: #69736c;

@@ -1,35 +1,37 @@
 # Local AI Control Center
 
-A local-first workspace for chatting with Ollama models and comparing their responses. The interface is built with React, Vite, and TypeScript; the API uses FastAPI and SQLite. Prompts and saved conversations stay on your machine.
+Een lokale werkruimte om met Ollama-modellen te chatten en hun antwoorden te vergelijken. De interface is gebouwd met React, Vite en TypeScript; de API gebruikt FastAPI en SQLite. Prompts en opgeslagen gesprekken blijven op je eigen computer.
 
-## Requirements
+> Lees je liever Engels? Ga naar de [Engelstalige README](README.en.md).
 
-- Python 3.11 or newer
+## Benodigdheden
+
+- Python 3.11 of nieuwer
 - [uv](https://docs.astral.sh/uv/)
-- Node.js 20.19+ or 22.12+
-- [Ollama](https://ollama.com/download) installed locally
+- Node.js 20.19+ of 22.12+
+- [Ollama](https://ollama.com/download), lokaal geïnstalleerd
 
-## Run it from a fresh clone
+## Starten na een nieuwe kloon
 
-Open two terminals from the repository root.
+Open twee terminals in de hoofdmap van de repository.
 
-### 1. Start Ollama and install a model
+### 1. Start Ollama en installeer een model
 
-Ollama normally runs as a background service. If it is not already running, start it in a terminal:
+Ollama draait meestal als achtergrondservice. Start het zo nodig in een terminal:
 
 ```sh
 ollama serve
 ```
 
-In another terminal, install any model you want to use, for example:
+Installeer in een andere terminal een model, bijvoorbeeld:
 
 ```sh
 ollama pull qwen2.5:7b
 ```
 
-Model downloads are managed by Ollama. The dashboard does not pull or delete models.
+Ollama beheert modeldownloads. Het dashboard downloadt of verwijdert geen modellen.
 
-### 2. Start the API
+### 2. Start de API
 
 ```sh
 cd backend
@@ -37,11 +39,11 @@ uv sync
 uv run python -m app
 ```
 
-The API listens on `127.0.0.1:8000` by default. Set `LACC_HOST` or `LACC_PORT` in the root `.env` file to change the bind address or port. SQLite data is created under `backend/data/` the first time the API starts.
+De API luistert standaard op `127.0.0.1:8000`. Pas het bindadres of de poort aan met `LACC_HOST` of `LACC_PORT` in het `.env`-bestand in de hoofdmap. De SQLite-database wordt bij de eerste start aangemaakt in `backend/data/`.
 
-### 3. Start the frontend
+### 3. Start de frontend
 
-In a second terminal, from the repository root:
+Open een tweede terminal in de hoofdmap:
 
 ```sh
 cd frontend
@@ -49,36 +51,41 @@ npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite (normally <http://127.0.0.1:5173>). The Vite development server proxies `/api` requests to the FastAPI server.
+Open de lokale URL die Vite toont, meestal <http://127.0.0.1:5173>. De Vite-ontwikkelserver stuurt `/api`-verzoeken door naar de FastAPI-server. Als poort 5173 bezet is, kiest Vite mogelijk automatisch een andere poort; gebruik dan de URL uit de terminal.
 
-## Configuration
+## Instellingen
 
-Defaults target Ollama at `http://127.0.0.1:11434`, store SQLite at `backend/data/local-ai-control-center.db`, and bind the API to localhost. Optional settings use the `LACC_` prefix:
+Standaard gebruikt de app Ollama op `http://127.0.0.1:11434`, slaat SQLite-gegevens op in `backend/data/local-ai-control-center.db` en bindt de API aan localhost. Optionele instellingen gebruiken het voorvoegsel `LACC_`:
 
-| Variable | Default | Purpose |
+| Variabele | Standaardwaarde | Doel |
 | --- | --- | --- |
-| `LACC_OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Ollama HTTP API address |
-| `LACC_DATABASE_URL` | `sqlite:///./data/local-ai-control-center.db` | SQLite database path (relative to `backend/`) |
-| `LACC_HOST` | `127.0.0.1` | API bind address |
-| `LACC_PORT` | `8000` | API port |
-| `LACC_REQUEST_TIMEOUT_SECONDS` | `10` | Ollama connection and request timeout; response reads allow up to 5 minutes |
+| `LACC_OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Adres van de Ollama HTTP-API |
+| `LACC_DATABASE_URL` | `sqlite:///./data/local-ai-control-center.db` | Pad naar de SQLite-database (relatief aan `backend/`) |
+| `LACC_HOST` | `127.0.0.1` | Bindadres van de API |
+| `LACC_PORT` | `8000` | API-poort |
+| `LACC_REQUEST_TIMEOUT_SECONDS` | `10` | Time-out voor verbindingen en verzoeken aan Ollama; het lezen van antwoorden mag maximaal 5 minuten duren |
 
-Copy `.env.example` to `.env` in the repository root to customize settings. Start the API from `backend/` so the relative SQLite path resolves to `backend/data/`. The API’s CORS allowlist is restricted to the local Vite development origins.
+Kopieer `.env.example` naar `.env` in de hoofdmap om instellingen aan te passen. Start de API vanuit `backend/`, zodat het relatieve pad naar de database uitkomt op `backend/data/`. De CORS-toestaanlijst van de API is beperkt tot lokale Vite-ontwikkeladressen.
 
-The Vite `/api` proxy targets `http://127.0.0.1:8000` by default. If you run the API on another port, set `VITE_API_TARGET` before starting Vite (for example, in PowerShell: `$env:VITE_API_TARGET = 'http://127.0.0.1:18080'`).
+De Vite-proxy voor `/api` gebruikt standaard `http://127.0.0.1:8000`. Draait de API op een andere poort, stel dan `VITE_API_TARGET` in voordat je Vite start. Bijvoorbeeld in PowerShell:
 
-## Features
+```powershell
+$env:VITE_API_TARGET = 'http://127.0.0.1:18080'
+```
 
-- Ollama connection and installed-model status
-- Streaming chat with persistent conversations and messages
-- Search, rename, and delete conversations
-- Generation time, prompt time, token count, and throughput when Ollama provides them
-- Prompt Playground for running one prompt across two to four local models in parallel
-- Responsive dark interface with loading, empty, and error states
+## Functies
 
-## Development checks
+- Status van de Ollama-verbinding en geïnstalleerde modellen
+- Chatten met streaming, met gesprekken en berichten opgeslagen in SQLite
+- Gesprekken zoeken, hernoemen en verwijderen
+- Generatieduur, promptduur, aantal tokens en tokens per seconde wanneer Ollama die gegevens levert
+- Prompt-speeltuin om één prompt parallel met twee tot vier lokale modellen uit te voeren
+- Responsieve donkere interface met laad-, lege en foutstatussen
+- Engelse en Nederlandse interface; de gekozen taal wordt lokaal onthouden
 
-Run backend tests with mocked Ollama responses (no running Ollama instance required):
+## Ontwikkelcontroles
+
+De backendtests gebruiken nagebootste Ollama-antwoorden; er hoeft geen Ollama-instantie actief te zijn:
 
 ```sh
 cd backend
@@ -86,7 +93,7 @@ uv run python -m pytest
 uv run python -m ruff check app tests
 ```
 
-Build the frontend:
+Controleer en bouw de frontend:
 
 ```sh
 cd frontend
@@ -95,19 +102,19 @@ npm run format:check
 npm run build
 ```
 
-## Security and local-first notes
+## Beveiliging en lokaal gebruik
 
-- Keep the API and frontend bound to `127.0.0.1` for local use. Do not expose them to a network without adding authentication and reviewing CORS and access controls.
-- The Ollama base URL is configurable for local setups; set it only to an endpoint you trust.
-- The API does not provide authentication because it is intended to run locally. Anyone who can access the bound local service can use it.
-- Prompts, messages, and conversation titles are stored in the local SQLite database. The database is excluded from version control.
-- Chat input and prompt size are capped. Ollama requests have bounded timeouts; long generations can still fail or be cancelled.
-- Prompt Playground only accepts models reported as installed by the configured Ollama service. It does not download or delete models.
+- Houd de API en frontend voor lokaal gebruik gebonden aan `127.0.0.1`. Stel ze niet bloot aan een netwerk zonder eerst authenticatie toe te voegen en CORS en toegangsbeheer te controleren.
+- Het Ollama-adres is instelbaar voor lokale configuraties; gebruik alleen een endpoint dat je vertrouwt.
+- De API heeft geen authenticatie, omdat deze bedoeld is voor lokaal gebruik. Iedereen met toegang tot de lokale service kan die gebruiken.
+- Prompts, berichten en gesprekstitels worden opgeslagen in de lokale SQLite-database. De database wordt uitgesloten van versiebeheer.
+- De lengte van chatinvoer en prompts is begrensd. Verzoeken aan Ollama hebben time-outs; lange generaties kunnen alsnog mislukken of worden geannuleerd.
+- De Prompt-speeltuin accepteert alleen modellen die door de ingestelde Ollama-service als geïnstalleerd worden gemeld. Modellen worden niet gedownload of verwijderd.
 
-## Project layout
+## Projectstructuur
 
 ```text
-backend/    FastAPI API, Ollama client, SQLite schema, pytest tests
-            pyproject.toml and uv.lock manage the Python environment
-frontend/   React + Vite application
+backend/    FastAPI-API, Ollama-client, SQLite-schema en pytest-tests
+            pyproject.toml en uv.lock beheren de Python-omgeving
+frontend/   React- en Vite-applicatie
 ```

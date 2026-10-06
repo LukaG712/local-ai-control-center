@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { api, type Model } from "./api/client";
 import MarkdownContent from "./MarkdownContent";
+import { messages, type Language, type MessageKey } from "./i18n";
 
 type Result = {
   model: string;
@@ -31,9 +32,18 @@ function rate(r: Result) {
     : "—";
 }
 
-export default function Playground({ models }: { models: Model[] }) {
+export default function Playground({
+  models,
+  language,
+}: {
+  models: Model[];
+  language: Language;
+}) {
+  const t = (key: MessageKey) => messages[language][key];
   const [prompt, setPrompt] = useState(
-    "Write a short, friendly explanation of why keeping AI local can be useful.",
+    language === "nl"
+      ? "Leg kort en vriendelijk uit waarom lokale AI handig kan zijn."
+      : "Write a short, friendly explanation of why keeping AI local can be useful.",
   );
   const [selected, setSelected] = useState<string[]>([]);
   const [results, setResults] = useState<Result[]>([]);
@@ -66,18 +76,15 @@ export default function Playground({ models }: { models: Model[] }) {
       <div className="playground-header">
         <div>
           <div className="play-kicker">
-            <Sparkles size={13} /> PROMPT PLAYGROUND{" "}
-            <span>LOCAL MODEL BENCH</span>
+            <Sparkles size={13} /> {t("playgroundKicker")}{" "}
+            <span>{t("localModelBench")}</span>
           </div>
           <h1>
-            One prompt.
+            {t("onePrompt")}
             <br />
-            <em>Different perspectives.</em>
+            <em>{t("differentPerspectives")}</em>
           </h1>
-          <p>
-            Run the same prompt across your local models and compare their
-            responses side by side.
-          </p>
+          <p>{t("compareDescription")}</p>
         </div>
         <div className="play-orb">
           <Cpu size={21} />
@@ -89,8 +96,8 @@ export default function Playground({ models }: { models: Model[] }) {
           <div className="control-heading">
             <span className="step-number">01</span>
             <div>
-              <b>Choose models</b>
-              <small>Select two to four installed models to compare</small>
+              <b>{t("chooseModels")}</b>
+              <small>{t("chooseModelsHelp")}</small>
             </div>
             <span className="selected-count">{selected.length} / 4</span>
           </div>
@@ -108,7 +115,7 @@ export default function Playground({ models }: { models: Model[] }) {
                 <span className="option-copy">
                   <b>{item.name}</b>
                   <small>
-                    {item.details?.parameter_size || "Local model"}
+                    {item.details?.parameter_size || t("localModel")}
                     {item.details?.quantization_level
                       ? ` · ${item.details.quantization_level}`
                       : ""}
@@ -118,10 +125,7 @@ export default function Playground({ models }: { models: Model[] }) {
               </button>
             ))}
             {!models.length && (
-              <div className="no-models">
-                No local models available. Start Ollama and install a model
-                first.
-              </div>
+              <div className="no-models">{t("noLocalModels")}</div>
             )}
           </div>
         </section>
@@ -129,22 +133,27 @@ export default function Playground({ models }: { models: Model[] }) {
           <div className="control-heading">
             <span className="step-number">02</span>
             <div>
-              <b>Your prompt</b>
-              <small>Every model receives exactly the same input</small>
+              <b>{t("yourPrompt")}</b>
+              <small>{t("samePromptHelp")}</small>
             </div>
             <span className="prompt-private">
-              <span /> PRIVATE
+              <span /> {t("private")}
             </span>
           </div>
           <textarea
             value={prompt}
-            aria-label="Prompt to compare across models"
+            aria-label={t("comparePromptLabel")}
             onChange={(e) => setPrompt(e.target.value)}
             maxLength={20_000}
-            placeholder="Write the prompt you want to compare..."
+            placeholder={t("promptPlaceholder")}
           />
           <div className="prompt-bottom">
-            <span>{prompt.length.toLocaleString()} / 20,000</span>
+            <span>
+              {prompt.length.toLocaleString(
+                language === "nl" ? "nl-NL" : "en-US",
+              )}{" "}
+              / 20,000
+            </span>
             <button
               className="compare-btn"
               disabled={selected.length < 2 || !prompt.trim() || loading}
@@ -152,11 +161,11 @@ export default function Playground({ models }: { models: Model[] }) {
             >
               {loading ? (
                 <>
-                  <span className="button-spinner" /> Running models
+                  <span className="button-spinner" /> {t("runningModels")}
                 </>
               ) : (
                 <>
-                  <Zap size={14} /> Compare responses
+                  <Zap size={14} /> {t("compareResponses")}
                 </>
               )}
             </button>
@@ -169,12 +178,12 @@ export default function Playground({ models }: { models: Model[] }) {
           <div className="results-title">
             <div>
               <span className="play-kicker">
-                RESULTS <span>·</span> {results.length} MODELS
+                {t("results")} <span>·</span> {results.length} {t("models")}
               </span>
-              <h2>Response comparison</h2>
+              <h2>{t("responseComparison")}</h2>
             </div>
             <button className="rerun-btn" onClick={() => void compare()}>
-              <RotateCcw size={13} /> Run again
+              <RotateCcw size={13} /> {t("runAgain")}
             </button>
           </div>
           <div className="result-grid">
@@ -186,12 +195,12 @@ export default function Playground({ models }: { models: Model[] }) {
                   </div>
                   <div>
                     <b>{result.model}</b>
-                    <small>LOCAL MODEL</small>
+                    <small>{t("localModelBench")}</small>
                   </div>
                   <span
                     className={result.error ? "result-failed" : "result-done"}
                   >
-                    {result.error ? "FAILED" : "COMPLETE"}
+                    {result.error ? t("failed") : t("complete")}
                   </span>
                 </header>
                 {result.error ? (
@@ -205,7 +214,7 @@ export default function Playground({ models }: { models: Model[] }) {
                     ) : (
                       <div className="result-response">
                         <span className="result-empty">
-                          No response text returned.
+                          {t("noResponseText")}
                         </span>
                       </div>
                     )}
@@ -213,7 +222,7 @@ export default function Playground({ models }: { models: Model[] }) {
                       <div>
                         <Clock3 size={13} />
                         <span>
-                          <small>GENERATION</small>
+                          <small>{t("generation")}</small>
                           <b>{time(result.total_duration)}</b>
                         </span>
                       </div>
@@ -227,13 +236,13 @@ export default function Playground({ models }: { models: Model[] }) {
                       <div>
                         <Gauge size={13} />
                         <span>
-                          <small>THROUGHPUT</small>
+                          <small>{t("throughput")}</small>
                           <b>{rate(result)}</b>
                         </span>
                       </div>
                     </div>
                     <div className="result-token-count">
-                      {result.eval_count ?? "—"} tokens generated
+                      {result.eval_count ?? "—"} {t("tokensGenerated")}
                     </div>
                   </>
                 )}
@@ -243,8 +252,7 @@ export default function Playground({ models }: { models: Model[] }) {
         </section>
       ) : (
         <div className="playground-footnote">
-          <span>◈</span> Responses stay local. Only installed Ollama models are
-          available for comparison.
+          <span>◈</span> {t("responsesStayLocal")}
         </div>
       )}
     </div>
