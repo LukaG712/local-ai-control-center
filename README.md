@@ -1,77 +1,25 @@
 # Local AI Control Center
 
-Een lokale werkruimte om met Ollama-modellen te chatten en hun antwoorden te vergelijken. De interface is gebouwd met React, Vite en TypeScript; de API gebruikt FastAPI en SQLite. Prompts en opgeslagen gesprekken blijven op je eigen computer.
+Een privé, lokale werkruimte om met Ollama-modellen te chatten en hun antwoorden te vergelijken.
 
 > Lees je liever Engels? Ga naar de [Engelstalige README](README.en.md).
 
-## Benodigdheden
+## Demo
 
-- Python 3.11 of nieuwer
-- [uv](https://docs.astral.sh/uv/)
-- Node.js 20.19+ of 22.12+
-- [Ollama](https://ollama.com/download), lokaal geïnstalleerd
+Er is geen gehoste demo: de applicatie heeft een lokale Ollama-installatie nodig en stuurt prompts naar de modellen op je eigen computer. Volg de [installatiestappen](#installatie) om de app zelf te starten.
 
-## Starten na een nieuwe kloon
+Zet je twee Prompt Playground-screenshots in de map `screenshots/` met deze bestandsnamen; ze verschijnen daarna automatisch op deze pagina:
 
-Open twee terminals in de hoofdmap van de repository.
+- `screenshots/playground-1.png`
+- `screenshots/playground-2.png`
 
-### 1. Start Ollama en installeer een model
+![Prompt Playground — screenshot 1](screenshots/playground-1.png)
 
-Ollama draait meestal als achtergrondservice. Start het zo nodig in een terminal:
+![Prompt Playground — screenshot 2](screenshots/playground-2.png)
 
-```sh
-ollama serve
-```
+## Wat is dit?
 
-Installeer in een andere terminal een model, bijvoorbeeld:
-
-```sh
-ollama pull qwen2.5:7b
-```
-
-Ollama beheert modeldownloads. Het dashboard downloadt of verwijdert geen modellen.
-
-### 2. Start de API
-
-```sh
-cd backend
-uv sync
-uv run python -m app
-```
-
-De API luistert standaard op `127.0.0.1:8000`. Pas het bindadres of de poort aan met `LACC_HOST` of `LACC_PORT` in het `.env`-bestand in de hoofdmap. De SQLite-database wordt bij de eerste start aangemaakt in `backend/data/`.
-
-### 3. Start de frontend
-
-Open een tweede terminal in de hoofdmap:
-
-```sh
-cd frontend
-npm ci
-npm run dev
-```
-
-Open de lokale URL die Vite toont, meestal <http://127.0.0.1:5173>. De Vite-ontwikkelserver stuurt `/api`-verzoeken door naar de FastAPI-server. Als poort 5173 bezet is, kiest Vite mogelijk automatisch een andere poort; gebruik dan de URL uit de terminal.
-
-## Instellingen
-
-Standaard gebruikt de app Ollama op `http://127.0.0.1:11434`, slaat SQLite-gegevens op in `backend/data/local-ai-control-center.db` en bindt de API aan localhost. Optionele instellingen gebruiken het voorvoegsel `LACC_`:
-
-| Variabele | Standaardwaarde | Doel |
-| --- | --- | --- |
-| `LACC_OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Adres van de Ollama HTTP-API |
-| `LACC_DATABASE_URL` | `sqlite:///./data/local-ai-control-center.db` | Pad naar de SQLite-database (relatief aan `backend/`) |
-| `LACC_HOST` | `127.0.0.1` | Bindadres van de API |
-| `LACC_PORT` | `8000` | API-poort |
-| `LACC_REQUEST_TIMEOUT_SECONDS` | `10` | Time-out voor verbindingen en verzoeken aan Ollama; het lezen van antwoorden mag maximaal 5 minuten duren |
-
-Kopieer `.env.example` naar `.env` in de hoofdmap om instellingen aan te passen. Start de API vanuit `backend/`, zodat het relatieve pad naar de database uitkomt op `backend/data/`. De CORS-toestaanlijst van de API is beperkt tot lokale Vite-ontwikkeladressen.
-
-De Vite-proxy voor `/api` gebruikt standaard `http://127.0.0.1:8000`. Draait de API op een andere poort, stel dan `VITE_API_TARGET` in voordat je Vite start. Bijvoorbeeld in PowerShell:
-
-```powershell
-$env:VITE_API_TARGET = 'http://127.0.0.1:18080'
-```
+Local AI Control Center is een lokaal draaiend dashboard voor Ollama. Je kunt gesprekken streamen, eerdere gesprekken beheren, generatiestatistieken bekijken en dezelfde prompt met meerdere geïnstalleerde modellen vergelijken. De frontend en API draaien op localhost; gesprekken en berichten worden opgeslagen in een lokale SQLite-database.
 
 ## Functies
 
@@ -82,24 +30,24 @@ $env:VITE_API_TARGET = 'http://127.0.0.1:18080'
 - Prompt-speeltuin om één prompt parallel met twee tot vier lokale modellen uit te voeren
 - Responsieve donkere interface met laad-, lege en foutstatussen
 - Engelse en Nederlandse interface; de gekozen taal wordt lokaal onthouden
+- Markdown-opmaak voor antwoorden, waaronder lijsten, tabellen en codeblokken
 
-## Ontwikkelcontroles
+## Techniek en architectuur
 
-De backendtests gebruiken nagebootste Ollama-antwoorden; er hoeft geen Ollama-instantie actief te zijn:
+| Onderdeel | Technologie |
+| --- | --- |
+| Frontend | React, TypeScript en Vite |
+| API | Python en FastAPI |
+| Opslag | SQLite |
+| Lokale AI | Ollama HTTP API |
+| Python-omgeving en dependencies | uv |
+| Backendtests | pytest; Ollama-verzoeken worden nagebootst |
 
-```sh
-cd backend
-uv run python -m pytest
-uv run python -m ruff check app tests
-```
-
-Controleer en bouw de frontend:
-
-```sh
-cd frontend
-npm ci
-npm run format:check
-npm run build
+```mermaid
+flowchart LR
+    Browser[React + Vite frontend] -->|HTTP / streaming| API[FastAPI API]
+    API --> DB[(SQLite)]
+    API -->|localhost HTTP API| Ollama[Ollama + lokale modellen]
 ```
 
 ## AI-ondersteunde ontwikkeling
@@ -122,6 +70,94 @@ Dit project wordt bewust gepresenteerd als een voorbeeld van **AI-ondersteunde s
 
 Het doel is te laten zien dat ik moderne AI-codeertools effectief kan inzetten om een idee om te zetten in een werkende applicatie, de resulterende architectuur kan begrijpen, het resultaat kan testen en het stapsgewijs kan verbeteren.
 
+## Installatie
+
+### Benodigdheden
+
+- Python 3.11 of nieuwer
+- [uv](https://docs.astral.sh/uv/)
+- Node.js 20.19+ of 22.12+
+- [Ollama](https://ollama.com/download), lokaal geïnstalleerd
+
+### 1. Start Ollama en installeer een model
+
+Ollama draait meestal als achtergrondservice. Start het zo nodig in een terminal:
+
+```sh
+ollama serve
+```
+
+Installeer in een andere terminal een model, bijvoorbeeld:
+
+```sh
+ollama pull qwen2.5:7b
+```
+
+Ollama beheert modeldownloads. Het dashboard downloadt of verwijdert geen modellen.
+
+### 2. Start de API
+
+Voer dit uit vanuit de hoofdmap van de repository:
+
+```sh
+cd backend
+uv sync
+uv run python -m app
+```
+
+De API luistert standaard op `127.0.0.1:8000`. De SQLite-database wordt bij de eerste start aangemaakt in `backend/data/`.
+
+### 3. Start de frontend
+
+Open een tweede terminal in de hoofdmap:
+
+```sh
+cd frontend
+npm ci
+npm run dev
+```
+
+Open de lokale URL die Vite toont, meestal <http://127.0.0.1:5173>. De Vite-ontwikkelserver stuurt `/api`-verzoeken door naar de FastAPI-server. Als poort 5173 bezet is, kiest Vite mogelijk automatisch een andere poort; gebruik dan de URL uit de terminal.
+
+## Configuratie
+
+Standaard gebruikt de app Ollama op `http://127.0.0.1:11434`, slaat SQLite-gegevens op in `backend/data/local-ai-control-center.db` en bindt de API aan localhost. Optionele API-instellingen gebruiken het voorvoegsel `LACC_`:
+
+| Variabele | Standaardwaarde | Doel |
+| --- | --- | --- |
+| `LACC_OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Adres van de Ollama HTTP-API |
+| `LACC_DATABASE_URL` | `sqlite:///./data/local-ai-control-center.db` | Pad naar de SQLite-database (relatief aan `backend/`) |
+| `LACC_HOST` | `127.0.0.1` | Bindadres van de API |
+| `LACC_PORT` | `8000` | API-poort |
+| `LACC_REQUEST_TIMEOUT_SECONDS` | `10` | Time-out voor verbindingen en verzoeken aan Ollama; het lezen van antwoorden mag maximaal 5 minuten duren |
+
+Kopieer `.env.example` naar `.env` in de hoofdmap om instellingen aan te passen. Start de API vanuit `backend/`, zodat het relatieve pad naar de database uitkomt op `backend/data/`. De CORS-toestaanlijst van de API is beperkt tot lokale Vite-ontwikkeladressen.
+
+De Vite-proxy voor `/api` gebruikt standaard `http://127.0.0.1:8000`. Draait de API op een andere poort, stel dan `VITE_API_TARGET` in voordat je Vite start. Bijvoorbeeld in PowerShell:
+
+```powershell
+$env:VITE_API_TARGET = 'http://127.0.0.1:18080'
+```
+
+## Ontwikkelen en testen
+
+De backendtests gebruiken nagebootste Ollama-antwoorden; er hoeft geen Ollama-instantie actief te zijn:
+
+```sh
+cd backend
+uv run python -m pytest
+uv run python -m ruff check app tests
+```
+
+Controleer en bouw de frontend:
+
+```sh
+cd frontend
+npm ci
+npm run format:check
+npm run build
+```
+
 ## Beveiliging en lokaal gebruik
 
 - Houd de API en frontend voor lokaal gebruik gebonden aan `127.0.0.1`. Stel ze niet bloot aan een netwerk zonder eerst authenticatie toe te voegen en CORS en toegangsbeheer te controleren.
@@ -137,4 +173,5 @@ Het doel is te laten zien dat ik moderne AI-codeertools effectief kan inzetten o
 backend/    FastAPI-API, Ollama-client, SQLite-schema en pytest-tests
             pyproject.toml en uv.lock beheren de Python-omgeving
 frontend/   React- en Vite-applicatie
+screenshots/ Afbeeldingen die in deze README worden getoond
 ```
