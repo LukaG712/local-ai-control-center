@@ -22,17 +22,20 @@ Local AI Control Center is a locally running dashboard for Ollama. Stream conver
 
 ## Screenshots
 
-<details>
-<summary>View application screenshots (6)</summary>
-
-<p><strong>Dashboard</strong><br><img src="screenshots/dashboard.png" alt="Local AI Control Center dashboard" width="720"></p>
-<p><strong>Prompt Playground — 1</strong><br><img src="screenshots/playground-1.png" alt="Prompt Playground comparison" width="720"></p>
-<p><strong>Prompt Playground — 2</strong><br><img src="screenshots/playground-2.png" alt="Prompt Playground comparison results" width="720"></p>
-<p><strong>Document Q&amp;A</strong><br><img src="screenshots/DocumentQA.png" alt="Document Q&A screen" width="720"></p>
-<p><strong>Code explainer — 1</strong><br><img src="screenshots/Codeexplainer-1.png" alt="Code explainer screen" width="720"></p>
-<p><strong>Code explainer — 2</strong><br><img src="screenshots/Codeexplainer-2.png" alt="Code explainer response" width="720"></p>
-
-</details>
+<table>
+  <tr>
+    <td><strong>Dashboard</strong><br><img src="screenshots/dashboard.png" alt="Local AI Control Center dashboard" width="400"></td>
+    <td><strong>Prompt Playground — 1</strong><br><img src="screenshots/playground-1.png" alt="Prompt Playground comparison" width="400"></td>
+  </tr>
+  <tr>
+    <td><strong>Prompt Playground — 2</strong><br><img src="screenshots/playground-2.png" alt="Prompt Playground comparison results" width="400"></td>
+    <td><strong>Document Q&amp;A</strong><br><img src="screenshots/DocumentQA.png" alt="Document Q&A screen" width="400"></td>
+  </tr>
+  <tr>
+    <td><strong>Code explainer — 1</strong><br><img src="screenshots/Codeexplainer-1.png" alt="Code explainer screen" width="400"></td>
+    <td><strong>Code explainer — 2</strong><br><img src="screenshots/Codeexplainer-2.png" alt="Code explainer response" width="400"></td>
+  </tr>
+</table>
 
 ## Tech stack and architecture
 

@@ -22,17 +22,20 @@ Local AI Control Center is een lokaal draaiend dashboard voor Ollama. Je kunt ge
 
 ## Screenshots
 
-<details>
-<summary>Bekijk screenshots van de applicatie (6)</summary>
-
-<p><strong>Dashboard</strong><br><img src="screenshots/dashboard.png" alt="Dashboard van Local AI Control Center" width="720"></p>
-<p><strong>Prompt-speeltuin — 1</strong><br><img src="screenshots/playground-1.png" alt="Vergelijking in de Prompt-speeltuin" width="720"></p>
-<p><strong>Prompt-speeltuin — 2</strong><br><img src="screenshots/playground-2.png" alt="Resultaten van de Prompt-speeltuin" width="720"></p>
-<p><strong>Document Q&amp;A</strong><br><img src="screenshots/DocumentQA.png" alt="Scherm voor vragen over documenten" width="720"></p>
-<p><strong>Code-uitlegger — 1</strong><br><img src="screenshots/Codeexplainer-1.png" alt="Scherm van de code-uitlegger" width="720"></p>
-<p><strong>Code-uitlegger — 2</strong><br><img src="screenshots/Codeexplainer-2.png" alt="Antwoord van de code-uitlegger" width="720"></p>
-
-</details>
+<table>
+  <tr>
+    <td><strong>Dashboard</strong><br><img src="screenshots/dashboard.png" alt="Dashboard van Local AI Control Center" width="400"></td>
+    <td><strong>Prompt-speeltuin — 1</strong><br><img src="screenshots/playground-1.png" alt="Vergelijking in de Prompt-speeltuin" width="400"></td>
+  </tr>
+  <tr>
+    <td><strong>Prompt-speeltuin — 2</strong><br><img src="screenshots/playground-2.png" alt="Resultaten van de Prompt-speeltuin" width="400"></td>
+    <td><strong>Document Q&amp;A</strong><br><img src="screenshots/DocumentQA.png" alt="Scherm voor vragen over documenten" width="400"></td>
+  </tr>
+  <tr>
+    <td><strong>Code-uitlegger — 1</strong><br><img src="screenshots/Codeexplainer-1.png" alt="Scherm van de code-uitlegger" width="400"></td>
+    <td><strong>Code-uitlegger — 2</strong><br><img src="screenshots/Codeexplainer-2.png" alt="Antwoord van de code-uitlegger" width="400"></td>
+  </tr>
+</table>
 
 ## Techniek en architectuur
 
