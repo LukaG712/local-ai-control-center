@@ -8,17 +8,26 @@ Een privé, lokale werkruimte om met Ollama-modellen te chatten en hun antwoorde
 
 Er is geen gehoste demo: de applicatie heeft een lokale Ollama-installatie nodig en stuurt prompts naar de modellen op je eigen computer. Volg de [installatiestappen](#installatie) om de app zelf te starten.
 
-Zet je dashboard-screenshot en twee Prompt Playground-screenshots in de map `screenshots/` met deze bestandsnamen; ze verschijnen daarna automatisch op deze pagina:
+Zet screenshots in de map `screenshots/` met deze bestandsnamen om de belangrijkste onderdelen van de app te tonen:
 
 - `screenshots/dashboard.png`
 - `screenshots/playground-1.png`
 - `screenshots/playground-2.png`
+- `screenshots/document-qa.png`
+- `screenshots/code-explainer-1.png`
+- `screenshots/code-explainer-2.png`
 
 ![Dashboard](screenshots/dashboard.png)
 
 ![Prompt Playground — screenshot 1](screenshots/playground-1.png)
 
 ![Prompt Playground — screenshot 2](screenshots/playground-2.png)
+
+![Document Q&A](screenshots/document-qa.png)
+
+![Code-uitlegger — screenshot 1](screenshots/code-explainer-1.png)
+
+![Code-uitlegger — screenshot 2](screenshots/code-explainer-2.png)
 
 ## Wat is dit?
 

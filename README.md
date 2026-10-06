@@ -8,17 +8,26 @@ A private, local-first workspace for chatting with Ollama models and comparing t
 
 There is no hosted demo: the application requires a local Ollama installation and sends prompts to models on your own machine. Follow the [installation steps](#installation) to run it yourself.
 
-Put your dashboard screenshot and two Prompt Playground screenshots in the `screenshots/` folder with these filenames and they will appear here automatically:
+Add screenshots to the `screenshots/` folder with these filenames to show the main application views:
 
 - `screenshots/dashboard.png`
 - `screenshots/playground-1.png`
 - `screenshots/playground-2.png`
+- `screenshots/document-qa.png`
+- `screenshots/code-explainer-1.png`
+- `screenshots/code-explainer-2.png`
 
 ![Dashboard](screenshots/dashboard.png)
 
 ![Prompt Playground — screenshot 1](screenshots/playground-1.png)
 
 ![Prompt Playground — screenshot 2](screenshots/playground-2.png)
+
+![Document Q&A](screenshots/document-qa.png)
+
+![Code explainer — screenshot 1](screenshots/code-explainer-1.png)
+
+![Code explainer — screenshot 2](screenshots/code-explainer-2.png)
 
 ## What is this?
 
