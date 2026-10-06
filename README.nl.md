@@ -13,9 +13,9 @@ Zet screenshots in de map `screenshots/` met deze bestandsnamen om de belangrijk
 - `screenshots/dashboard.png`
 - `screenshots/playground-1.png`
 - `screenshots/playground-2.png`
-- `screenshots/document-qa.png`
-- `screenshots/code-explainer-1.png`
-- `screenshots/code-explainer-2.png`
+- `screenshots/DocumentQA.png`
+- `screenshots/Codeexplainer-1.png`
+- `screenshots/Codeexplainer-2.png`
 
 ![Dashboard](screenshots/dashboard.png)
 
@@ -23,11 +23,11 @@ Zet screenshots in de map `screenshots/` met deze bestandsnamen om de belangrijk
 
 ![Prompt Playground — screenshot 2](screenshots/playground-2.png)
 
-![Document Q&A](screenshots/document-qa.png)
+![Document Q&A](screenshots/DocumentQA.png)
 
-![Code-uitlegger — screenshot 1](screenshots/code-explainer-1.png)
+![Code-uitlegger — screenshot 1](screenshots/Codeexplainer-1.png)
 
-![Code-uitlegger — screenshot 2](screenshots/code-explainer-2.png)
+![Code-uitlegger — screenshot 2](screenshots/Codeexplainer-2.png)
 
 ## Wat is dit?
 
