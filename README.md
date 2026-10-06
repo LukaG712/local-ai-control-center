@@ -177,5 +177,4 @@ backend/    FastAPI-API, Ollama-client, SQLite-schema en pytest-tests
             pyproject.toml en uv.lock beheren de Python-omgeving
 frontend/   React- en Vite-applicatie
 screenshots/ Afbeeldingen die in deze README worden getoond
-portfolio/  Zelfstandige portfolio-website (zie portfolio/README.md)
 ```
