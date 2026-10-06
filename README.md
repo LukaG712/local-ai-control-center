@@ -102,6 +102,26 @@ npm run format:check
 npm run build
 ```
 
+## AI-ondersteunde ontwikkeling
+
+Dit project is ontwikkeld met uitgebreid gebruik van **ChatGPT en OpenAI Codex** als AI-ontwikkelhulpmiddelen.
+
+Ik heb ChatGPT gebruikt om de projectomvang, architectuur, functies, technische keuzes en ontwikkelaanpak te bepalen. **OpenAI Codex is vervolgens als codeeragent gebruikt om de applicatie te implementeren en stapsgewijs te verbeteren.**
+
+Mijn verantwoordelijkheden waren:
+
+- de vereisten en gewenste functionaliteit definiëren
+- architectuur- en techniekkeuzes maken
+- de implementatie met iteratieve prompts aansturen
+- de applicatie en integraties testen
+- de gegenereerde implementatie beoordelen en corrigeren
+- problemen tijdens de ontwikkeling opsporen en oplossen
+- de Git/GitHub-werkwijze en projectdocumentatie opzetten
+
+Dit project wordt bewust gepresenteerd als een voorbeeld van **AI-ondersteunde softwareontwikkeling**, niet als een bewering dat alle code zonder AI-hulp handmatig is geschreven.
+
+Het doel is te laten zien dat ik moderne AI-codeertools effectief kan inzetten om een idee om te zetten in een werkende applicatie, de resulterende architectuur kan begrijpen, het resultaat kan testen en het stapsgewijs kan verbeteren.
+
 ## Beveiliging en lokaal gebruik
 
 - Houd de API en frontend voor lokaal gebruik gebonden aan `127.0.0.1`. Stel ze niet bloot aan een netwerk zonder eerst authenticatie toe te voegen en CORS en toegangsbeheer te controleren.

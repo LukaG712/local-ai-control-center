@@ -98,6 +98,26 @@ npm run format:check
 npm run build
 ```
 
+## AI-Assisted Development
+
+This project was developed with extensive use of **ChatGPT and OpenAI Codex** as AI development tools.
+
+I used ChatGPT to help define the project scope, architecture, features, technical decisions, and development approach. **OpenAI Codex was then used as the coding agent to implement and iterate on the application.**
+
+I was responsible for:
+
+- defining the requirements and desired functionality
+- making architectural and technical decisions
+- directing the implementation through iterative prompts
+- testing the application and integrations
+- reviewing and correcting the generated implementation
+- debugging issues during development
+- setting up the Git/GitHub workflow and project documentation
+
+The project is intentionally presented as an example of **AI-assisted software development**, rather than as a claim that all code was written manually without AI assistance.
+
+The goal was to demonstrate that I can use modern AI coding tools effectively to turn an idea into a working application, understand the resulting architecture, test it, and iterate on it.
+
 ## Security and local-first notes
 
 - Keep the API and frontend bound to `127.0.0.1` for local use. Do not expose them to a network without adding authentication and reviewing CORS and access controls.
