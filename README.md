@@ -4,31 +4,6 @@ A private, local-first workspace for chatting with Ollama models and comparing t
 
 > Liever in het Nederlands? Lees de [Nederlandstalige README](README.nl.md).
 
-## Demo
-
-There is no hosted demo: the application requires a local Ollama installation and sends prompts to models on your own machine. Follow the [installation steps](#installation) to run it yourself.
-
-Add screenshots to the `screenshots/` folder with these filenames to show the main application views:
-
-- `screenshots/dashboard.png`
-- `screenshots/playground-1.png`
-- `screenshots/playground-2.png`
-- `screenshots/DocumentQA.png`
-- `screenshots/Codeexplainer-1.png`
-- `screenshots/Codeexplainer-2.png`
-
-![Dashboard](screenshots/dashboard.png)
-
-![Prompt Playground — screenshot 1](screenshots/playground-1.png)
-
-![Prompt Playground — screenshot 2](screenshots/playground-2.png)
-
-![Document Q&A](screenshots/DocumentQA.png)
-
-![Code explainer — screenshot 1](screenshots/Codeexplainer-1.png)
-
-![Code explainer — screenshot 2](screenshots/Codeexplainer-2.png)
-
 ## What is this?
 
 Local AI Control Center is a locally running dashboard for Ollama. Stream conversations, manage chat history, inspect generation statistics, and compare the same prompt across multiple installed models. The frontend and API run on localhost; conversations and messages are stored in a local SQLite database.
@@ -44,6 +19,20 @@ Local AI Control Center is a locally running dashboard for Ollama. Stream conver
 - Responsive dark interface with loading, empty, and error states
 - English and Dutch interface with the selected language remembered locally
 - Markdown formatting for responses, including lists, tables, and code blocks
+
+## Screenshots
+
+<details>
+<summary>View application screenshots (6)</summary>
+
+<p><strong>Dashboard</strong><br><img src="screenshots/dashboard.png" alt="Local AI Control Center dashboard" width="720"></p>
+<p><strong>Prompt Playground — 1</strong><br><img src="screenshots/playground-1.png" alt="Prompt Playground comparison" width="720"></p>
+<p><strong>Prompt Playground — 2</strong><br><img src="screenshots/playground-2.png" alt="Prompt Playground comparison results" width="720"></p>
+<p><strong>Document Q&amp;A</strong><br><img src="screenshots/DocumentQA.png" alt="Document Q&A screen" width="720"></p>
+<p><strong>Code explainer — 1</strong><br><img src="screenshots/Codeexplainer-1.png" alt="Code explainer screen" width="720"></p>
+<p><strong>Code explainer — 2</strong><br><img src="screenshots/Codeexplainer-2.png" alt="Code explainer response" width="720"></p>
+
+</details>
 
 ## Tech stack and architecture
 

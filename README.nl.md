@@ -4,31 +4,6 @@ Een privé, lokale werkruimte om met Ollama-modellen te chatten en hun antwoorde
 
 > Wil je de Engelse hoofdversie lezen? Bekijk de [English README](README.md).
 
-## Demo
-
-Er is geen gehoste demo: de applicatie heeft een lokale Ollama-installatie nodig en stuurt prompts naar de modellen op je eigen computer. Volg de [installatiestappen](#installatie) om de app zelf te starten.
-
-Zet screenshots in de map `screenshots/` met deze bestandsnamen om de belangrijkste onderdelen van de app te tonen:
-
-- `screenshots/dashboard.png`
-- `screenshots/playground-1.png`
-- `screenshots/playground-2.png`
-- `screenshots/DocumentQA.png`
-- `screenshots/Codeexplainer-1.png`
-- `screenshots/Codeexplainer-2.png`
-
-![Dashboard](screenshots/dashboard.png)
-
-![Prompt Playground — screenshot 1](screenshots/playground-1.png)
-
-![Prompt Playground — screenshot 2](screenshots/playground-2.png)
-
-![Document Q&A](screenshots/DocumentQA.png)
-
-![Code-uitlegger — screenshot 1](screenshots/Codeexplainer-1.png)
-
-![Code-uitlegger — screenshot 2](screenshots/Codeexplainer-2.png)
-
 ## Wat is dit?
 
 Local AI Control Center is een lokaal draaiend dashboard voor Ollama. Je kunt gesprekken streamen, eerdere gesprekken beheren, generatiestatistieken bekijken en dezelfde prompt met meerdere geïnstalleerde modellen vergelijken. De frontend en API draaien op localhost; gesprekken en berichten worden opgeslagen in een lokale SQLite-database.
@@ -44,6 +19,20 @@ Local AI Control Center is een lokaal draaiend dashboard voor Ollama. Je kunt ge
 - Responsieve donkere interface met laad-, lege en foutstatussen
 - Engelse en Nederlandse interface; de gekozen taal wordt lokaal onthouden
 - Markdown-opmaak voor antwoorden, waaronder lijsten, tabellen en codeblokken
+
+## Screenshots
+
+<details>
+<summary>Bekijk screenshots van de applicatie (6)</summary>
+
+<p><strong>Dashboard</strong><br><img src="screenshots/dashboard.png" alt="Dashboard van Local AI Control Center" width="720"></p>
+<p><strong>Prompt-speeltuin — 1</strong><br><img src="screenshots/playground-1.png" alt="Vergelijking in de Prompt-speeltuin" width="720"></p>
+<p><strong>Prompt-speeltuin — 2</strong><br><img src="screenshots/playground-2.png" alt="Resultaten van de Prompt-speeltuin" width="720"></p>
+<p><strong>Document Q&amp;A</strong><br><img src="screenshots/DocumentQA.png" alt="Scherm voor vragen over documenten" width="720"></p>
+<p><strong>Code-uitlegger — 1</strong><br><img src="screenshots/Codeexplainer-1.png" alt="Scherm van de code-uitlegger" width="720"></p>
+<p><strong>Code-uitlegger — 2</strong><br><img src="screenshots/Codeexplainer-2.png" alt="Antwoord van de code-uitlegger" width="720"></p>
+
+</details>
 
 ## Techniek en architectuur
 
