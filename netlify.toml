@@ -1,0 +1,3 @@
+[build]
+  command = "node netlify-build.mjs"
+  publish = "portfolio-dist"
