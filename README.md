@@ -1,14 +1,14 @@
 # Local AI Control Center
 
-Een privé, lokale werkruimte om met Ollama-modellen te chatten en hun antwoorden te vergelijken.
+A private, local-first workspace for chatting with Ollama models and comparing their responses.
 
-> Lees je liever Engels? Ga naar de [Engelstalige README](README.en.md).
+> Liever in het Nederlands? Lees de [Nederlandstalige README](README.nl.md).
 
 ## Demo
 
-Er is geen gehoste demo: de applicatie heeft een lokale Ollama-installatie nodig en stuurt prompts naar de modellen op je eigen computer. Volg de [installatiestappen](#installatie) om de app zelf te starten.
+There is no hosted demo: the application requires a local Ollama installation and sends prompts to models on your own machine. Follow the [installation steps](#installation) to run it yourself.
 
-Zet je dashboard-screenshot en twee Prompt Playground-screenshots in de map `screenshots/` met deze bestandsnamen; ze verschijnen daarna automatisch op deze pagina:
+Put your dashboard screenshot and two Prompt Playground screenshots in the `screenshots/` folder with these filenames and they will appear here automatically:
 
 - `screenshots/dashboard.png`
 - `screenshots/playground-1.png`
@@ -20,87 +20,88 @@ Zet je dashboard-screenshot en twee Prompt Playground-screenshots in de map `scr
 
 ![Prompt Playground — screenshot 2](screenshots/playground-2.png)
 
-## Wat is dit?
+## What is this?
 
-Local AI Control Center is een lokaal draaiend dashboard voor Ollama. Je kunt gesprekken streamen, eerdere gesprekken beheren, generatiestatistieken bekijken en dezelfde prompt met meerdere geïnstalleerde modellen vergelijken. De frontend en API draaien op localhost; gesprekken en berichten worden opgeslagen in een lokale SQLite-database.
+Local AI Control Center is a locally running dashboard for Ollama. Stream conversations, manage chat history, inspect generation statistics, and compare the same prompt across multiple installed models. The frontend and API run on localhost; conversations and messages are stored in a local SQLite database.
 
-## Functies
+## Features
 
-- Status van de Ollama-verbinding en geïnstalleerde modellen
-- Chatten met streaming, met gesprekken en berichten opgeslagen in SQLite
-- Gesprekken zoeken, hernoemen en verwijderen
-- Generatieduur, promptduur, aantal tokens en tokens per seconde wanneer Ollama die gegevens levert
-- Prompt-speeltuin om één prompt parallel met twee tot vier lokale modellen uit te voeren
-- Responsieve donkere interface met laad-, lege en foutstatussen
-- Engelse en Nederlandse interface; de gekozen taal wordt lokaal onthouden
-- Markdown-opmaak voor antwoorden, waaronder lijsten, tabellen en codeblokken
+- Ollama connection and installed-model status
+- Streaming chat with conversations and messages persisted in SQLite
+- Search, rename, and delete conversations
+- Generation time, prompt time, token count, and tokens per second when Ollama provides them
+- Prompt Playground for running one prompt across two to four local models in parallel
+- AI tools for asking questions about local `.txt` and `.md` documents and getting code explained
+- Responsive dark interface with loading, empty, and error states
+- English and Dutch interface with the selected language remembered locally
+- Markdown formatting for responses, including lists, tables, and code blocks
 
-## Techniek en architectuur
+## Tech stack and architecture
 
-| Onderdeel | Technologie |
+| Component | Technology |
 | --- | --- |
-| Frontend | React, TypeScript en Vite |
-| API | Python en FastAPI |
-| Opslag | SQLite |
-| Lokale AI | Ollama HTTP API |
-| Python-omgeving en dependencies | uv |
-| Backendtests | pytest; Ollama-verzoeken worden nagebootst |
+| Frontend | React, TypeScript, and Vite |
+| API | Python and FastAPI |
+| Storage | SQLite |
+| Local AI | Ollama HTTP API |
+| Python environment and dependencies | uv |
+| Backend tests | pytest with mocked Ollama requests |
 
 ```mermaid
 flowchart LR
     Browser[React + Vite frontend] -->|HTTP / streaming| API[FastAPI API]
     API --> DB[(SQLite)]
-    API -->|localhost HTTP API| Ollama[Ollama + lokale modellen]
+    API -->|localhost HTTP API| Ollama[Ollama + local models]
 ```
 
-## AI-ondersteunde ontwikkeling
+## AI-Assisted Development
 
-Dit project is ontwikkeld met uitgebreid gebruik van **ChatGPT en OpenAI Codex** als AI-ontwikkelhulpmiddelen.
+This project was developed with extensive use of **ChatGPT and OpenAI Codex** as AI development tools.
 
-Ik heb ChatGPT gebruikt om de projectomvang, architectuur, functies, technische keuzes en ontwikkelaanpak te bepalen. **OpenAI Codex is vervolgens als codeeragent gebruikt om de applicatie te implementeren en stapsgewijs te verbeteren.**
+I used ChatGPT to help define the project scope, architecture, features, technical decisions, and development approach. **OpenAI Codex was then used as the coding agent to implement and iterate on the application.**
 
-Mijn verantwoordelijkheden waren:
+I was responsible for:
 
-- de vereisten en gewenste functionaliteit definiëren
-- architectuur- en techniekkeuzes maken
-- de implementatie met iteratieve prompts aansturen
-- de applicatie en integraties testen
-- de gegenereerde implementatie beoordelen en corrigeren
-- problemen tijdens de ontwikkeling opsporen en oplossen
-- de Git/GitHub-werkwijze en projectdocumentatie opzetten
+- defining the requirements and desired functionality
+- making architectural and technical decisions
+- directing the implementation through iterative prompts
+- testing the application and integrations
+- reviewing and correcting the generated implementation
+- debugging issues during development
+- setting up the Git/GitHub workflow and project documentation
 
-Dit project wordt bewust gepresenteerd als een voorbeeld van **AI-ondersteunde softwareontwikkeling**, niet als een bewering dat alle code zonder AI-hulp handmatig is geschreven.
+The project is intentionally presented as an example of **AI-assisted software development**, rather than as a claim that all code was written manually without AI assistance.
 
-Het doel is te laten zien dat ik moderne AI-codeertools effectief kan inzetten om een idee om te zetten in een werkende applicatie, de resulterende architectuur kan begrijpen, het resultaat kan testen en het stapsgewijs kan verbeteren.
+The goal was to demonstrate that I can use modern AI coding tools effectively to turn an idea into a working application, understand the resulting architecture, test it, and iterate on it.
 
-## Installatie
+## Installation
 
-### Benodigdheden
+### Requirements
 
-- Python 3.11 of nieuwer
+- Python 3.11 or newer
 - [uv](https://docs.astral.sh/uv/)
-- Node.js 20.19+ of 22.12+
-- [Ollama](https://ollama.com/download), lokaal geïnstalleerd
+- Node.js 20.19+ or 22.12+
+- [Ollama](https://ollama.com/download) installed locally
 
-### 1. Start Ollama en installeer een model
+### 1. Start Ollama and install a model
 
-Ollama draait meestal als achtergrondservice. Start het zo nodig in een terminal:
+Ollama normally runs as a background service. If it is not already running, start it in a terminal:
 
 ```sh
 ollama serve
 ```
 
-Installeer in een andere terminal een model, bijvoorbeeld:
+In another terminal, install any model you want to use, for example:
 
 ```sh
 ollama pull qwen2.5:7b
 ```
 
-Ollama beheert modeldownloads. Het dashboard downloadt of verwijdert geen modellen.
+Model downloads are managed by Ollama. The dashboard does not pull or delete models.
 
-### 2. Start de API
+### 2. Start the API
 
-Voer dit uit vanuit de hoofdmap van de repository:
+Run these commands from the repository root:
 
 ```sh
 cd backend
@@ -108,11 +109,11 @@ uv sync
 uv run python -m app
 ```
 
-De API luistert standaard op `127.0.0.1:8000`. De SQLite-database wordt bij de eerste start aangemaakt in `backend/data/`.
+The API listens on `127.0.0.1:8000` by default. The SQLite database is created under `backend/data/` the first time the API starts.
 
-### 3. Start de frontend
+### 3. Start the frontend
 
-Open een tweede terminal in de hoofdmap:
+Open a second terminal from the repository root:
 
 ```sh
 cd frontend
@@ -120,31 +121,31 @@ npm ci
 npm run dev
 ```
 
-Open de lokale URL die Vite toont, meestal <http://127.0.0.1:5173>. De Vite-ontwikkelserver stuurt `/api`-verzoeken door naar de FastAPI-server. Als poort 5173 bezet is, kiest Vite mogelijk automatisch een andere poort; gebruik dan de URL uit de terminal.
+Open the local URL printed by Vite (normally <http://127.0.0.1:5173>). The Vite development server proxies `/api` requests to the FastAPI server. If port 5173 is already in use, Vite may choose another port; use the URL printed in the terminal.
 
-## Configuratie
+## Configuration
 
-Standaard gebruikt de app Ollama op `http://127.0.0.1:11434`, slaat SQLite-gegevens op in `backend/data/local-ai-control-center.db` en bindt de API aan localhost. Optionele API-instellingen gebruiken het voorvoegsel `LACC_`:
+Defaults target Ollama at `http://127.0.0.1:11434`, store SQLite data at `backend/data/local-ai-control-center.db`, and bind the API to localhost. Optional API settings use the `LACC_` prefix:
 
-| Variabele | Standaardwaarde | Doel |
+| Variable | Default | Purpose |
 | --- | --- | --- |
-| `LACC_OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Adres van de Ollama HTTP-API |
-| `LACC_DATABASE_URL` | `sqlite:///./data/local-ai-control-center.db` | Pad naar de SQLite-database (relatief aan `backend/`) |
-| `LACC_HOST` | `127.0.0.1` | Bindadres van de API |
-| `LACC_PORT` | `8000` | API-poort |
-| `LACC_REQUEST_TIMEOUT_SECONDS` | `10` | Time-out voor verbindingen en verzoeken aan Ollama; het lezen van antwoorden mag maximaal 5 minuten duren |
+| `LACC_OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Ollama HTTP API address |
+| `LACC_DATABASE_URL` | `sqlite:///./data/local-ai-control-center.db` | SQLite database path (relative to `backend/`) |
+| `LACC_HOST` | `127.0.0.1` | API bind address |
+| `LACC_PORT` | `8000` | API port |
+| `LACC_REQUEST_TIMEOUT_SECONDS` | `10` | Ollama connection and request timeout; response reads allow up to 5 minutes |
 
-Kopieer `.env.example` naar `.env` in de hoofdmap om instellingen aan te passen. Start de API vanuit `backend/`, zodat het relatieve pad naar de database uitkomt op `backend/data/`. De CORS-toestaanlijst van de API is beperkt tot lokale Vite-ontwikkeladressen.
+Copy `.env.example` to `.env` in the repository root to customize settings. Start the API from `backend/` so the relative SQLite path resolves to `backend/data/`. The API’s CORS allowlist is restricted to local Vite development origins.
 
-De Vite-proxy voor `/api` gebruikt standaard `http://127.0.0.1:8000`. Draait de API op een andere poort, stel dan `VITE_API_TARGET` in voordat je Vite start. Bijvoorbeeld in PowerShell:
+The Vite `/api` proxy targets `http://127.0.0.1:8000` by default. If you run the API on another port, set `VITE_API_TARGET` before starting Vite. For example, in PowerShell:
 
 ```powershell
 $env:VITE_API_TARGET = 'http://127.0.0.1:18080'
 ```
 
-## Ontwikkelen en testen
+## Development and testing
 
-De backendtests gebruiken nagebootste Ollama-antwoorden; er hoeft geen Ollama-instantie actief te zijn:
+Backend tests use mocked Ollama responses; no Ollama instance needs to be running:
 
 ```sh
 cd backend
@@ -152,7 +153,7 @@ uv run python -m pytest
 uv run python -m ruff check app tests
 ```
 
-Controleer en bouw de frontend:
+Check formatting and build the frontend:
 
 ```sh
 cd frontend
@@ -161,20 +162,22 @@ npm run format:check
 npm run build
 ```
 
-## Beveiliging en lokaal gebruik
+## Security and local use
 
-- Houd de API en frontend voor lokaal gebruik gebonden aan `127.0.0.1`. Stel ze niet bloot aan een netwerk zonder eerst authenticatie toe te voegen en CORS en toegangsbeheer te controleren.
-- Het Ollama-adres is instelbaar voor lokale configuraties; gebruik alleen een endpoint dat je vertrouwt.
-- De API heeft geen authenticatie, omdat deze bedoeld is voor lokaal gebruik. Iedereen met toegang tot de lokale service kan die gebruiken.
-- Prompts, berichten en gesprekstitels worden opgeslagen in de lokale SQLite-database. De database wordt uitgesloten van versiebeheer.
-- De lengte van chatinvoer en prompts is begrensd. Verzoeken aan Ollama hebben time-outs; lange generaties kunnen alsnog mislukken of worden geannuleerd.
-- De Prompt-speeltuin accepteert alleen modellen die door de ingestelde Ollama-service als geïnstalleerd worden gemeld. Modellen worden niet gedownload of verwijderd.
+- Keep the API and frontend bound to `127.0.0.1` for local use. Do not expose them to a network without adding authentication and reviewing CORS and access controls.
+- The Ollama base URL is configurable for local setups; set it only to an endpoint you trust.
+- The API does not provide authentication because it is intended to run locally. Anyone who can access the bound local service can use it.
+- Prompts, messages, conversation titles, and added document contents are stored in the local SQLite database. The database is excluded from version control.
+- Chat input and prompt size are capped. Ollama requests have bounded timeouts; long generations can still fail or be cancelled.
+- Prompt Playground only accepts models reported as installed by the configured Ollama service. It does not download or delete models.
+- The document tool stores text in SQLite and selects relevant passages with keyword matching; it is not a semantic search engine.
+- Only `.txt` and `.md` files up to 200 KB are accepted. Their contents are sent to the selected local Ollama model when you ask a question.
 
-## Projectstructuur
+## Project structure
 
 ```text
-backend/    FastAPI-API, Ollama-client, SQLite-schema en pytest-tests
-            pyproject.toml en uv.lock beheren de Python-omgeving
-frontend/   React- en Vite-applicatie
-screenshots/ Afbeeldingen die in deze README worden getoond
+backend/    FastAPI API, Ollama client, SQLite schema, and pytest tests
+            pyproject.toml and uv.lock manage the Python environment
+frontend/   React + Vite application
+screenshots/ Images displayed in this README
 ```

@@ -138,3 +138,56 @@ def test_playground_rejects_uninstalled_models(client):
         "/api/playground/compare", json={"prompt": "Test", "models": ["model-a", "missing"]}
     )
     assert response.status_code == 422
+
+
+def test_document_tool_persists_and_answers_with_relevant_local_context(client):
+    app.state.ollama.list_models.return_value = [{"name": "model-a"}]
+
+    async def fake_generate(model, prompt):
+        assert model == "model-a"
+        assert "Local AI Control Center stores conversation history in SQLite." in prompt
+        assert "Unrelated note about growing tomatoes." not in prompt
+        return {"response": "History is stored in SQLite.", "eval_count": 7, "eval_duration": 1_000_000_000}
+
+    app.state.ollama.generate = fake_generate
+    created = client.post(
+        "/api/tools/documents",
+        json={
+            "name": "notes.md",
+            "content": "Local AI Control Center stores conversation history in SQLite.\n\nUnrelated note about growing tomatoes.",
+        },
+    )
+    assert created.status_code == 201
+    document_id = created.json()["id"]
+    assert client.get("/api/tools/documents").json()["documents"][0]["name"] == "notes.md"
+
+    response = client.post(
+        "/api/tools/documents/ask",
+        json={"model": "model-a", "question": "Where is conversation history stored?"},
+    )
+    assert response.status_code == 200
+    assert response.json()["answer"] == "History is stored in SQLite."
+    assert response.json()["sources"] == ["notes.md"]
+    assert client.delete(f"/api/tools/documents/{document_id}").status_code == 204
+
+
+def test_document_tool_rejects_unsupported_file_type(client):
+    response = client.post("/api/tools/documents", json={"name": "payload.exe", "content": "text"})
+    assert response.status_code == 422
+
+
+def test_code_explainer_uses_selected_installed_model(client):
+    app.state.ollama.list_models.return_value = [{"name": "model-a"}]
+
+    async def fake_generate(model, prompt):
+        assert model == "model-a"
+        assert "return 1 + 1" in prompt
+        return {"response": "It returns two."}
+
+    app.state.ollama.generate = fake_generate
+    response = client.post(
+        "/api/tools/explain-code",
+        json={"model": "model-a", "code": "return 1 + 1", "question": "What does this return?"},
+    )
+    assert response.status_code == 200
+    assert response.json()["explanation"] == "It returns two."

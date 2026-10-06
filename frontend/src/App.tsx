@@ -5,6 +5,8 @@ import {
   ChevronDown,
   Command,
   Cpu,
+  BookOpen,
+  Braces,
   Menu,
   MessageSquare,
   MoreHorizontal,
@@ -25,6 +27,7 @@ import {
   type OllamaStatus,
 } from "./api/client";
 import Playground from "./Playground";
+import Tools from "./Tools";
 import MarkdownContent from "./MarkdownContent";
 import { messages, type Language, type MessageKey } from "./i18n";
 
@@ -42,7 +45,7 @@ function speed(message: Message) {
 export default function App() {
   const [language, setLanguage] = useState<Language>(() => {
     try {
-      return localStorage.getItem("lacc-language") === "nl" ? "nl" : "en";
+      return localStorage.getItem("lacc-language-v2") === "nl" ? "nl" : "en";
     } catch {
       return "en";
     }
@@ -54,7 +57,9 @@ export default function App() {
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [active, setActive] = useState<Conversation | null>(null);
   const [model, setModel] = useState("");
-  const [view, setView] = useState<"chat" | "playground">("chat");
+  const [view, setView] = useState<
+    "chat" | "playground" | "documents" | "code"
+  >("chat");
   const [search, setSearch] = useState("");
   const [draft, setDraft] = useState("");
   const [pendingUser, setPendingUser] = useState("");
@@ -72,7 +77,7 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = language;
     try {
-      localStorage.setItem("lacc-language", language);
+      localStorage.setItem("lacc-language-v2", language);
     } catch {
       // The selected language still applies for this session.
     }
@@ -260,6 +265,28 @@ export default function App() {
       >
         <Sparkles size={15} /> {t("promptPlayground")}
       </button>
+      <button
+        className={`nav-item ${view === "documents" ? "selected" : ""}`}
+        onClick={() => {
+          setError("");
+          setView("documents");
+          setSidebarOpen(false);
+        }}
+      >
+        <BookOpen size={15} />{" "}
+        {language === "nl" ? "Documentzoeker" : "Document Q&A"}
+      </button>
+      <button
+        className={`nav-item ${view === "code" ? "selected" : ""}`}
+        onClick={() => {
+          setError("");
+          setView("code");
+          setSidebarOpen(false);
+        }}
+      >
+        <Braces size={15} />{" "}
+        {language === "nl" ? "Code-uitlegger" : "Code explainer"}
+      </button>
       <div className="convo-heading">
         <div className="side-label">{t("recent")}</div>
         <span>{conversations.length}</span>
@@ -405,7 +432,15 @@ export default function App() {
               <b>
                 {view === "playground"
                   ? t("promptPlayground")
-                  : active?.title || t("newConversationTitle")}
+                  : view === "documents"
+                    ? language === "nl"
+                      ? "Documentzoeker"
+                      : "Document Q&A"
+                    : view === "code"
+                      ? language === "nl"
+                        ? "Code-uitlegger"
+                        : "Code explainer"
+                      : active?.title || t("newConversationTitle")}
               </b>
             </span>
           </div>
@@ -446,6 +481,14 @@ export default function App() {
         </header>
         {view === "playground" ? (
           <Playground models={models} language={language} />
+        ) : view === "documents" || view === "code" ? (
+          <Tools
+            key={view}
+            initialTab={view}
+            models={models}
+            model={model}
+            language={language}
+          />
         ) : (
           <section className="workspace">
             <div className="chat-column">

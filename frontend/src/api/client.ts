@@ -30,6 +30,16 @@ export type ComparisonResult = {
   eval_count?: number;
   eval_duration?: number;
 };
+export type LocalDocument = { id: string; name: string; created_at: string };
+export type ToolResult = {
+  answer?: string;
+  explanation?: string;
+  sources?: string[];
+  total_duration?: number;
+  prompt_eval_duration?: number;
+  eval_count?: number;
+  eval_duration?: number;
+};
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
@@ -75,6 +85,28 @@ export const api = {
         { method: "POST", body: JSON.stringify({ prompt, models }) },
       )
     ).results,
+  documents: async () =>
+    (await request<{ documents: LocalDocument[] }>("/api/tools/documents"))
+      .documents,
+  addDocument: (name: string, content: string) =>
+    request<LocalDocument>("/api/tools/documents", {
+      method: "POST",
+      body: JSON.stringify({ name, content }),
+    }),
+  removeDocument: (id: string) =>
+    request<void>(`/api/tools/documents/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+    }),
+  askDocuments: (model: string, question: string) =>
+    request<ToolResult>("/api/tools/documents/ask", {
+      method: "POST",
+      body: JSON.stringify({ model, question }),
+    }),
+  explainCode: (model: string, code: string, question: string) =>
+    request<ToolResult>("/api/tools/explain-code", {
+      method: "POST",
+      body: JSON.stringify({ model, code, question }),
+    }),
   stream: async (
     id: string,
     model: string,
