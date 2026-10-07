@@ -71,9 +71,6 @@ Mijn verantwoordelijkheden waren:
 - problemen tijdens de ontwikkeling opsporen en oplossen
 - de Git/GitHub-werkwijze en projectdocumentatie opzetten
 
-Dit project wordt bewust gepresenteerd als een voorbeeld van **AI-ondersteunde softwareontwikkeling**, niet als een bewering dat alle code zonder AI-hulp handmatig is geschreven.
-
-Het doel is te laten zien dat ik moderne AI-codeertools effectief kan inzetten om een idee om te zetten in een werkende applicatie, de resulterende architectuur kan begrijpen, het resultaat kan testen en het stapsgewijs kan verbeteren.
 
 ## Installatie
 
