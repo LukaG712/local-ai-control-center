@@ -71,10 +71,6 @@ I was responsible for:
 - debugging issues during development
 - setting up the Git/GitHub workflow and project documentation
 
-The project is intentionally presented as an example of **AI-assisted software development**, rather than as a claim that all code was written manually without AI assistance.
-
-The goal was to demonstrate that I can use modern AI coding tools effectively to turn an idea into a working application, understand the resulting architecture, test it, and iterate on it.
-
 ## Installation
 
 ### Requirements
